@@ -3,10 +3,6 @@
     "emitEntryPoint": true,
     "preserveCompilationContext": true
   },
-  "content": [
-    "wwwroot",
-    "Views"
-  ],
   "dependencies": {
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0-*",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0-*",
@@ -31,5 +27,13 @@
     "Views",
     "wwwroot",
     "web.config"
-  ]
+  ],
+  "tools": {
+    "dotnet-razor-tooling": {
+      "version": "1.0.0-*",
+      "imports": [
+        "net45"
+      ]
+    }
+  }
 }
