@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Buffers;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.WebEncoders.Testing;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Mvc.Razor
@@ -30,7 +32,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
         {
             // Arrange
             var urlHelperFactory = new UrlHelperFactory();
-            var jsonHelper = new JsonHelper(new JsonOutputFormatter());
+            var jsonHelper = new JsonHelper(
+                new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                ArrayPool<char>.Shared);
             var htmlEncoder = new HtmlTestEncoder();
             var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
             var activator = new RazorPageActivator(
@@ -44,7 +48,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor
 
             var myService = new MyService();
             var helper = Mock.Of<IHtmlHelper<object>>();
-            
+
             var serviceProvider = new ServiceCollection()
                 .AddSingleton(myService)
                 .AddSingleton(helper)
@@ -87,7 +91,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore"),
                 new HtmlTestEncoder());
 
@@ -123,7 +129,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore.Mvc"),
                 new HtmlTestEncoder());
             var instance = new TestRazorPage();
@@ -167,7 +175,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore.Mvc"),
                 new HtmlTestEncoder());
             var instance = new TestRazorPage();
@@ -210,7 +220,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore.Mvc"),
                 new HtmlTestEncoder());
             var instance = new DoesNotDeriveFromRazorPageOfTButHasModelProperty();
@@ -250,7 +262,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore.Mvc"),
                 new HtmlTestEncoder());
             var instance = new HasIncorrectViewDataPropertyType();
@@ -282,7 +296,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor
             var activator = new RazorPageActivator(
                 new EmptyModelMetadataProvider(),
                 new UrlHelperFactory(),
-                new JsonHelper(new JsonOutputFormatter()),
+                new JsonHelper(
+                    new JsonOutputFormatter(new JsonSerializerSettings(), ArrayPool<char>.Shared),
+                    ArrayPool<char>.Shared),
                 new DiagnosticListener("Microsoft.AspNetCore.Mvc"),
                 new HtmlTestEncoder());
             var instance = new HasUnusualIUrlHelperProperty();
